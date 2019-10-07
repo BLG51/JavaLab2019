@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -12,12 +14,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Main {
     static String filepath = "";
     static Lock lock;
+    static HashSet<String> names;
     public static void main(String[] args) throws InterruptedException {
         lock = new ReentrantLock();
         Scanner sc = new Scanner(System.in);
+        names = new HashSet<>();
         while (true) {
             filepath = sc.nextLine();
-            lock.lock();
+//            lock.lock();
             DownloadThread thr = new DownloadThread();
             thr.start();
             thr.join();
@@ -40,7 +44,7 @@ public class Main {
         @Override
         public void run() {
             String address = filepath;
-            lock.unlock();
+//            lock.unlock();
             URL website = null;
             try {
                 website = new URL(address);
@@ -54,8 +58,19 @@ public class Main {
                 e.printStackTrace();
             }
             FileOutputStream fos = null;
+            String name = getFileName(address);
+            lock.lock();
+            if (names.contains(name)) {
+                int i = 0;
+                while (names.contains(i+name)) {
+                    i++;
+                }
+                name = i+name;
+            }
+            names.add(name);
+            lock.unlock();
             try {
-                fos = new FileOutputStream(getFileName(address));
+                fos = new FileOutputStream(name);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
