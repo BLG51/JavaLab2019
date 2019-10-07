@@ -12,9 +12,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
-    static String filepath = "";
-    static Lock lock;
-    static HashSet<String> names;
+    private static String filepath = "";
+    private static Lock lock;
+    private static HashSet<String> names;
     public static void main(String[] args) throws InterruptedException {
         lock = new ReentrantLock();
         Scanner sc = new Scanner(System.in);
@@ -50,12 +50,14 @@ public class Main {
                 website = new URL(address);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+                System.out.println("problems with url");
             }
             ReadableByteChannel rbc = null;
             try {
                 rbc = Channels.newChannel(website.openStream());
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("connection problem");
             }
             FileOutputStream fos = null;
             String name = getFileName(address);
@@ -73,21 +75,15 @@ public class Main {
                 fos = new FileOutputStream(name);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                System.out.println("something is wrong with file");
             }
             try {
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 rbc.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("something is wrong with stream");
             }
         }
     }
