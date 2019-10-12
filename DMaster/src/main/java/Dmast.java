@@ -11,11 +11,11 @@ import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Main {
-    private static String filepath = "";
-    private static Lock lock;
-    private static HashSet<String> names;
-    public static void main(String[] args) throws InterruptedException {
+public class Dmast {
+    private String filepath = "";
+    private Lock lock;
+    private HashSet<String> names;
+    public void start() throws InterruptedException {
         lock = new ReentrantLock();
         Scanner sc = new Scanner(System.in);
         names = new HashSet<>();
@@ -28,23 +28,24 @@ public class Main {
         }
     }
 
-    private static String getFileExtension(String fileName) {
+    private String getFileExtension(String fileName) {
         if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
             return fileName.substring(fileName.lastIndexOf(".") + 1);
         else return "";
     }
 
-    private static String getFileName(String fileName) {
+    private String getFileName(String fileName) {
         if (fileName.lastIndexOf("/") != -1 && fileName.lastIndexOf("/") != 0)
             return fileName.substring(fileName.lastIndexOf("/") + 1);
         else return "default";
     }
 
-    public static class DownloadThread extends Thread {
+    public class DownloadThread extends Thread {
         @Override
         public void run() {
+            lock.lock();
             String address = filepath;
-//            lock.unlock();
+            lock.unlock();
             URL website = null;
             try {
                 website = new URL(address);
