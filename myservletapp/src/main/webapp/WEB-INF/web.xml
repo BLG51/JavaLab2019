@@ -5,24 +5,30 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--<servlet>-->
+        <!--<servlet-name>DownloadForm</servlet-name>-->
+        <!--<servlet-class>ru.javalab.myservletapp.DownloadFormServlet</servlet-class>-->
+    <!--</servlet>-->
+
     <servlet>
-        <servlet-name>HelloWorld</servlet-name>
-        <servlet-class>ru.javalab.myservletapp.MyServlet</servlet-class>
+        <servlet-name>Downloader</servlet-name>
+        <servlet-class>ru.javalab.myservletapp.DownloadServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloWorld</servlet-name>
-        <url-pattern>/</url-pattern>
+        <servlet-name>Downloader</servlet-name>
+        <url-pattern>/download</url-pattern>
     </servlet-mapping>
 
+
     <filter>
-        <filter-name>HelloFilter</filter-name>
-        <filter-class>MyFilter</filter-class>
+        <filter-name>DownloadFilter</filter-name>
+        <filter-class>ru.javalab.myservletapp.DownloadFilter</filter-class>
     </filter>
 
     <filter-mapping>
-        <filter-name>HelloFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <filter-name>DownloadFilter</filter-name>
+        <url-pattern>/download</url-pattern>
     </filter-mapping>
 
 </web-app>
