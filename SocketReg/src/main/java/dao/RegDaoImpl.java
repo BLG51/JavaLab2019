@@ -8,9 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RegDaoImpl implements RegDao{
+public class RegDaoImpl implements RegDao {
     private Connection connection;
-    public RegDaoImpl(Connection connection){
+
+    public RegDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
@@ -32,7 +33,23 @@ public class RegDaoImpl implements RegDao{
                 }
                 return null;
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public User getById(int id) {
+        String SQL = "SELECT * FROM reglist WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(SQL)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return regRowMapper.mapRow(rs);
+                }
+                return null;
+            }
+        } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -45,7 +62,7 @@ public class RegDaoImpl implements RegDao{
             stmt.setString(1, item.getLogin());
             stmt.setString(2, item.getPassword());
             stmt.executeUpdate();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
     }

@@ -4,6 +4,12 @@ public class Header {
     private String alg;
     private String typ;
 
+    public Header(){}
+
+    public Header(String typ){
+        this.typ = typ;
+    }
+
     public String getAlg() {
         return alg;
     }

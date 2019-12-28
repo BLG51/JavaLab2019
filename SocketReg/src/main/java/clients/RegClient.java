@@ -2,10 +2,7 @@ package clients;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.GetMessagesCommand;
-import model.Header;
-import model.JsonObj;
-import model.User;
+import model.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,6 +17,7 @@ public class RegClient {
     private Socket clientSocket;
     private PrintWriter writer;
     private BufferedReader reader;
+    private static String token;
 
     public void startConnection(String ip, int port) {
         try {
@@ -53,11 +51,37 @@ public class RegClient {
             case "message":
                 header.setTyp("message");
                 json.setPayload(message);
+                json.setToken(token);
                 break;
             case "get_messages":
                 header.setTyp("command");
                 GetMessagesCommand com = new GetMessagesCommand(Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
                 json.setPayload(com);
+                json.setToken(token);
+                break;
+            case "list":
+                header.setTyp("list");
+                json.setToken(token);
+                break;
+            case "buy":
+                header.setTyp("buy");
+                int buyid = Integer.parseInt(arr[1]);
+                json.setPayload(buyid);
+                json.setToken(token);
+                break;
+            case "add":
+                header.setTyp("add");
+                Product addprod = new Product(); addprod.setName(arr[1]);
+                addprod.setPrice(Integer.parseInt(arr[2]));
+                addprod.setCount(Integer.parseInt(arr[3]));
+                json.setPayload(addprod);
+                json.setToken(token);
+                break;
+            case "delete":
+                header.setTyp("delete");
+                int delid = Integer.parseInt(arr[1]);
+                json.setPayload(delid);
+                json.setToken(token);
                 break;
         }
         json.setHeader(header);
@@ -65,11 +89,20 @@ public class RegClient {
     }
 
     private Runnable receiveMessagesTask = new Runnable() {
+        ObjectMapper mapper = new ObjectMapper();
         public void run() {
             while (true) {
                 try {
                     String message = reader.readLine();
-                    System.out.println(message);
+                    JsonObj json = mapper.readValue(message, JsonObj.class);
+                    Header header = json.getHeader();
+                    if (header.getTyp().equals("message")){
+                        String mes = mapper.convertValue(json.getPayload(), String.class);
+                        System.out.println(mes);
+
+                    } else if (header.getTyp().equals("token")){
+                        RegClient.token = mapper.convertValue(json.getPayload(), String.class);
+                    }
                 } catch (IOException e) {
                     throw new IllegalStateException(e);
                 }

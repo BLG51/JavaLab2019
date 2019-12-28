@@ -21,6 +21,8 @@ public class RegService {
         return dao.get(login);
     }
 
+    public User getById(int id) {return dao.getById(id);}
+
     public void create(User item) {
         dao.create(item);
     }

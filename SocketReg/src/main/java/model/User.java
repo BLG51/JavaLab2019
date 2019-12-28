@@ -5,6 +5,8 @@ public class User {
     AuthData auth;
     String role;
 
+    public User(){};
+
     public User(int id, String login, String password, String role) {
       auth = new AuthData(login, password);
       this.id = id;
