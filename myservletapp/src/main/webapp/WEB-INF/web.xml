@@ -12,8 +12,23 @@
 
     <servlet>
         <servlet-name>Downloader</servlet-name>
-        <servlet-class>ru.javalab.myservletapp.DownloadServlet</servlet-class>
+        <servlet-class>ru.javalab.myservletapp.servlet.DownloadServlet</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>Registration</servlet-name>
+        <servlet-class>ru.javalab.myservletapp.servlet.RegServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Table</servlet-name>
+        <servlet-class>ru.javalab.myservletapp.servlet.TableServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Table</servlet-name>
+        <url-pattern>/table</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Downloader</servlet-name>
@@ -21,9 +36,14 @@
     </servlet-mapping>
 
 
+    <servlet-mapping>
+        <servlet-name>Registration</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>DownloadFilter</filter-name>
-        <filter-class>ru.javalab.myservletapp.DownloadFilter</filter-class>
+        <filter-class>ru.javalab.myservletapp.servlet.DownloadFilter</filter-class>
     </filter>
 
     <filter-mapping>

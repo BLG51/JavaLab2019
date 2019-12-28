@@ -1,4 +1,4 @@
-package ru.javalab.myservletapp;
+package ru.javalab.myservletapp.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

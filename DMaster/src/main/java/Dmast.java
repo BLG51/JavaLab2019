@@ -14,7 +14,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Dmast {
     private String filepath = "";
     private Lock lock;
-    private HashSet<String> names;
+    private HashSet<String> names = null;
+
     public void start() throws InterruptedException {
         lock = new ReentrantLock();
         Scanner sc = new Scanner(System.in);
@@ -26,6 +27,21 @@ public class Dmast {
             thr.start();
             thr.join();
         }
+    }
+
+    public void reset() {
+        names = null;
+    }
+
+    public void download(String link) throws InterruptedException {
+        if (names == null) {
+            names = new HashSet<>();
+        }
+        filepath = link;
+//            lock.lock();
+        DownloadThread thr = new DownloadThread();
+        thr.start();
+        thr.join();
     }
 
     private String getFileExtension(String fileName) {
@@ -65,10 +81,10 @@ public class Dmast {
             lock.lock();
             if (names.contains(name)) {
                 int i = 0;
-                while (names.contains(i+name)) {
+                while (names.contains(i + name)) {
                     i++;
                 }
-                name = i+name;
+                name = i + name;
             }
             names.add(name);
             lock.unlock();
