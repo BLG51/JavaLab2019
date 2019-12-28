@@ -116,6 +116,15 @@ public class RegServer {
                                 JsonObj j = new JsonObj(new Header("pagination"), mdata);
                                 PrintWriter writer = new PrintWriter(
                                         this.clientSocket.getOutputStream(), true);
+
+                                writer.println(mapper.writeValueAsString(j));
+                            } else if (header.getTyp().equals("getall")) {
+                                UserService us = new UserService();
+                                List<Product> l = us.getProducts();
+                                String s = l.toString();
+                                JsonObj j = new JsonObj(new Header("message"), s);
+                                PrintWriter writer = new PrintWriter(
+                                        this.clientSocket.getOutputStream(), true);
                                 writer.println(mapper.writeValueAsString(j));
                             } else if (header.getTyp().equals("buy")) {
                                 int buyid = mapper.convertValue(json.getPayload(), Integer.class);

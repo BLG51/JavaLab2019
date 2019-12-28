@@ -3,10 +3,14 @@ package service;
 import model.BuyEntry;
 import model.Product;
 
+import java.util.List;
+
 public class UserService {
     ProductService ps = new ProductService();
     BuyListService bls = new BuyListService();
 
+
+    public List<Product> getProducts(){return ps.getAll();}
 
     public void buyProduct(int userid, int productid) {
         Product p = ps.get(productid);

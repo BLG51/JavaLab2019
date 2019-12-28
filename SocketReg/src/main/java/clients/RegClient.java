@@ -69,6 +69,10 @@ public class RegClient {
                 json.setPayload(buyid);
                 json.setToken(token);
                 break;
+            case "getall":
+                header.setTyp("getall");
+                json.setToken(token);
+                break;
             case "add":
                 header.setTyp("add");
                 Product addprod = new Product(); addprod.setName(arr[1]);

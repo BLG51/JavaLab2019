@@ -28,11 +28,11 @@ public class BuyListDaoImpl implements BuyListDao {
         String SQL = "SELECT * FROM buylist";
         try (PreparedStatement stmt = connection.prepareStatement(SQL)) {
             try (ResultSet rs = stmt.executeQuery()) {
-                List<BuyEntry> messages = new ArrayList<>();
+                List<BuyEntry> list = new ArrayList<>();
                 while (rs.next()) {
-                    messages.add(rowMapper.mapRow(rs));
+                    list.add(rowMapper.mapRow(rs));
                 }
-                return messages;
+                return list;
             }
         } catch (SQLException e) {
             throw new IllegalStateException(e);

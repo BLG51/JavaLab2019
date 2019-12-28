@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class ProductService {
     private ProductDao dao;
@@ -18,6 +19,8 @@ public class ProductService {
         Connection connection = ConnectionManager.getConnection();
         dao = new ProductDaoImpl(connection);
     }
+
+    public List<Product> getAll(){return dao.getAll();}
 
     public Product get(int id) {
         return dao.get(id);

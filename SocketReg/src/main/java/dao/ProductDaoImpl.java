@@ -1,5 +1,6 @@
 package dao;
 
+import model.BuyEntry;
 import model.Product;
 import model.User;
 
@@ -7,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
     private Connection connection;
@@ -34,6 +37,22 @@ public class ProductDaoImpl implements ProductDao {
                 return null;
             }
         } catch(SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public List<Product> getAll(){
+        String SQL = "SELECT * FROM product";
+        try (PreparedStatement stmt = connection.prepareStatement(SQL)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Product> products = new ArrayList<>();
+                while (rs.next()) {
+                    products.add(rowMapper.mapRow(rs));
+                }
+                return products;
+            }
+        } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
     }
