@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class RegClient {
 
@@ -26,6 +27,7 @@ public class RegClient {
             reader = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
             new Thread(receiveMessagesTask).start();
+            new Thread(sendMessageTask).start();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -91,6 +93,20 @@ public class RegClient {
         json.setHeader(header);
         writer.println(mapper.writeValueAsString(json));
     }
+
+    private Runnable sendMessageTask = new Runnable() {
+        @Override
+        public void run() {
+            for (;;) {
+                Scanner in = new Scanner(System.in);
+                try {
+                    sendMessage(in.nextLine());
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
 
     private Runnable receiveMessagesTask = new Runnable() {
         ObjectMapper mapper = new ObjectMapper();
