@@ -1,5 +1,6 @@
 package ru.javalab.myservletapp.service;
 
+import ru.javalab.myservletapp.context.Component;
 import ru.javalab.myservletapp.dao.RandomStringDaoImpl;
 import ru.javalab.myservletapp.dao.RegDao;
 import ru.javalab.myservletapp.dao.RegDaoImpl;
@@ -8,7 +9,7 @@ import ru.javalab.myservletapp.model.Reg;
 
 import java.sql.Connection;
 
-public class RandomStringService {
+public class RandomStringService implements Component {
     private RandomStringDaoImpl dao;
 
     public RandomStringService() {
@@ -25,4 +26,8 @@ public class RandomStringService {
     }
 
 
+    @Override
+    public String getName() {
+        return "randomStringService";
+    }
 }

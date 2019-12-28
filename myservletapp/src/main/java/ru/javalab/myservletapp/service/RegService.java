@@ -1,12 +1,13 @@
 package ru.javalab.myservletapp.service;
 
+import ru.javalab.myservletapp.context.Component;
 import ru.javalab.myservletapp.dao.RegDao;
 import ru.javalab.myservletapp.dao.RegDaoImpl;
 import ru.javalab.myservletapp.model.Reg;
 
 import java.sql.Connection;
 
-public class RegService {
+public class RegService implements Component {
     private RegDao dao;
 
     public RegService() {
@@ -29,5 +30,10 @@ public class RegService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public String getName() {
+        return "regService";
     }
 }

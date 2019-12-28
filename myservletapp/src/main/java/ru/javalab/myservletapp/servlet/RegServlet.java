@@ -1,9 +1,13 @@
 package ru.javalab.myservletapp.servlet;
 
+import ru.javalab.myservletapp.context.ApplicationContext;
+import ru.javalab.myservletapp.dto.UserDto;
 import ru.javalab.myservletapp.model.Role;
 import ru.javalab.myservletapp.model.User;
 import ru.javalab.myservletapp.service.UserService;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +21,13 @@ import java.util.regex.Pattern;
 public class RegServlet extends HttpServlet {
     private String filename = "regdata.csv";
     private boolean isOk = true;
+    private ApplicationContext context;
+
+    @Override
+    public void init(ServletConfig config) {
+        ServletContext servletContext = config.getServletContext();
+        this.context = (ApplicationContext) servletContext.getAttribute("context");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -70,7 +81,7 @@ public class RegServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService serv = new UserService();
+        UserService serv = context.getComponent(UserService.class, "userService");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String passwordRepeat = req.getParameter("password-repeat");
@@ -81,11 +92,12 @@ public class RegServlet extends HttpServlet {
         String agreement = req.getParameter("agreement");
 
         User user = new User(email, password, country, about, role);
+        UserDto us = new UserDto(email, password);
 
         Matcher matcher = Pattern.compile(".+@.+\\..+").matcher(email);
 
         try {
-            if (!serv.isRegistered(user) && matcher.find() && !password.equals("") && !country.equals("") && !about.equals("") && password.equals(passwordRepeat) && !role.equals("") && agreement.equals("on")) {
+            if (!serv.isRegistered(us) && matcher.find() && !password.equals("") && !country.equals("") && !about.equals("") && password.equals(passwordRepeat) && !role.equals("") && agreement.equals("on")) {
 
                 Role r = new Role(newRole);
                 if (!newRole.equals("") && !serv.roleExists(r)) {

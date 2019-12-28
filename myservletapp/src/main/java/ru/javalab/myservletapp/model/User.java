@@ -16,6 +16,11 @@ public class User {
         this.about = about;
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public User(String email, String password, String country, String about, String role) {
         this.email = email;
         this.password = password;

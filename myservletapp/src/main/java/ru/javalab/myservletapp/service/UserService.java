@@ -1,6 +1,8 @@
 package ru.javalab.myservletapp.service;
 
+import ru.javalab.myservletapp.context.Component;
 import ru.javalab.myservletapp.dao.*;
+import ru.javalab.myservletapp.dto.UserDto;
 import ru.javalab.myservletapp.model.Reg;
 import ru.javalab.myservletapp.model.Role;
 import ru.javalab.myservletapp.model.RoleUser;
@@ -9,7 +11,7 @@ import ru.javalab.myservletapp.model.User;
 import java.sql.Connection;
 import java.util.List;
 
-public class UserService {
+public class UserService implements Component {
     private UserDao udao;
     private RoleUserDao rudao;
     private RoleDaoImpl rdao;
@@ -36,7 +38,7 @@ public class UserService {
         rudao.create(ru);
     }
 
-    public boolean isRegistered(User item) {
+    public boolean isRegistered(UserDto item) {
         try {
             User dbItem = get(item.getEmail());
             return item.getPassword().equals(dbItem.getPassword());
@@ -59,5 +61,10 @@ public class UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public String getName() {
+        return "UserService";
     }
 }
