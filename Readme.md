@@ -4,4 +4,4 @@
 
 Контекст, архитекстура: ContextApp
 
-Сайт на сервлетах(jsp с таблицей пользователей): myservletapp
+Сайт на сервлетах с регистрацией/логином и списком продуктов(Классы для джавалаба: context, listener, regservlet, authservlet, productservlet + связанное, остальное для другого проекта): myservletapp
